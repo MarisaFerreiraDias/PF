@@ -1,12 +1,13 @@
 import os
 import random
 import math
+from turtle import Screen
 import pygame
 from os import listdir
 from os.path import isfile, join
 pygame.init()
 
-pygame.display.set_caption("Platformer")
+pygame.display.set_caption("NotAHorrorGame")
 
 WIDTH, HEIGHT = 1000, 800
 FPS = 60
@@ -45,7 +46,7 @@ def load_sprite_sheets(dir1, dir2, width, height, direction=False):
 
 
 def get_block(size):
-    path = join("assets", "Terrain", "Terreno1.png")
+    path = join("assets", "Terrain", "Terrain3.png")
     image = pygame.image.load(path).convert_alpha()
     surface = pygame.Surface((size, size), pygame.SRCALPHA, 32)
     rect = pygame.Rect(96, 0, size, size)
@@ -56,7 +57,7 @@ def get_block(size):
 class Player(pygame.sprite.Sprite):
     COLOR = (255, 0, 0)
     GRAVITY = 1
-    SPRITES = load_sprite_sheets("MainCharacters", "MaskDude", 32, 32, True)
+    SPRITES = load_sprite_sheets("MainCharacters", "PinkMan", 32, 32, True)
     ANIMATION_DELAY = 3
 
     def __init__(self, x, y, width, height):
@@ -204,20 +205,21 @@ class Fire(Object):
 
 def get_background(name):
     image = pygame.image.load(join("assets", "Background", name))
-    _, _, width, height = image.get_rect()
-    tiles = []
+    #_, _, width, height = image.get_rect()
+    image = pygame.transform.scale(image, (WIDTH, HEIGHT))
+    tiles = [( 0, 0)]
 
-    for i in range(WIDTH // width + 1):
-        for j in range(HEIGHT // height + 1):
-            pos = (i * width, j * height)
-            tiles.append(pos)
+    #for i in range(WIDTH // width + 1):
+        #for j in range(HEIGHT // height + 1):
+            #pos = (i * width, j * height)
+            #tiles.append(pos)
 
     return tiles, image
 
 
 def draw(window, background, bg_image, player, objects, offset_x):
     for tile in background:
-        window.blit(bg_image, tile)
+         window.blit(bg_image, tile)
 
     for obj in objects:
         obj.draw(window, offset_x)
@@ -279,7 +281,7 @@ def handle_move(player, objects):
 
 def main(window):
     clock = pygame.time.Clock()
-    background, bg_image = get_background("Blue.png")
+    background, bg_image = get_background("Florest.png")
 
     block_size = 90
 
@@ -292,7 +294,7 @@ def main(window):
                Block(block_size * 3, HEIGHT - block_size * 4, block_size), fire]
 
     offset_x = 0
-    scroll_area_width = 200
+    scroll_area_width = 2000
 
     run = True
     while run:
